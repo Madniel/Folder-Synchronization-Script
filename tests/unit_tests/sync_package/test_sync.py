@@ -5,12 +5,15 @@ import time
 from sync_folders.sync_folders import log, fast_hash
 
 
-def test_fast_hash_basic(temporary_directories_with_files, exemplary_log_file):
-    source, _ = temporary_directories_with_files
-    file_path = os.path.join(source, "exemplary_file.txt")
-    expected_xxhash = '176d683a04c66e88'
+def test_fast_hash_basic():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        file_path = os.path.join(tmpdir, "exemplary_file.txt")
 
-    assert fast_hash(file_path) == expected_xxhash
+        with open(file_path, 'w') as f:
+            f.write("content1")
+
+        expected_xxhash = '176d683a04c66e88'
+        assert fast_hash(file_path) == expected_xxhash
 
 
 def test_fast_hash_large_file():
