@@ -10,9 +10,9 @@ def test_fast_hash_basic():
         file_path = os.path.join(tmpdir, "exemplary_file.txt")
 
         with open(file_path, 'w') as f:
-            f.write("content1")
+            f.write("content")
 
-        expected_xxhash = '176d683a04c66e88'
+        expected_xxhash = '6c5b191a31c5a9fc'
         assert fast_hash(file_path) == expected_xxhash
 
 
