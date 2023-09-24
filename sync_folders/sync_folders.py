@@ -146,7 +146,7 @@ def check_replica_exists(replica: str) -> None:
         os.makedirs(replica)
 
 
-def get_directory_entries(directory: str) -> Dict[str, os.DirEntry]:
+def get_directory_entries(directory: str) -> Dict:
     """
     Retrieve the directory entries for the given directory.
 
@@ -154,7 +154,7 @@ def get_directory_entries(directory: str) -> Dict[str, os.DirEntry]:
     - directory: Path to the directory.
 
     Returns:
-    - Dict[str, os.DirEntry]: Dictionary with directory entries.
+    - Dict: Dictionary with directory entries.
     """
     return {entry.name: entry for entry in os.scandir(directory)}
 
