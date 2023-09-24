@@ -16,7 +16,8 @@ if __name__ == "__main__":
     Example:
         run_script.py /path/to/source/folder /path/to/replica/folder 10 /path/to/logfile.log
 
-    This example will sync the source folder to the replica folder every 10 seconds and log the synchronization activities to the specified log file.
+    This example will sync the source folder to the replica folder every 10 seconds and log the synchronization 
+    activities to the specified log file.
     """
     parser = argparse.ArgumentParser(description="Run the folder synchronization.")
     parser.add_argument("source", help="Source folder path")
