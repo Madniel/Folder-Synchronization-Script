@@ -6,6 +6,7 @@ from typing import Dict
 import xxhash
 
 from utils.decorator import exception_handler
+SYSTEM_RESERVED_NAMES = {"CON", "PRN", "AUX", "NUL", "COM1", "LPT1"}  # This is for Windows. Adjust accordingly.
 
 
 @exception_handler

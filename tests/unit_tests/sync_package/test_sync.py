@@ -9,8 +9,8 @@ def test_fast_hash_basic():
     with tempfile.TemporaryDirectory() as tmpdir:
         file_path = os.path.join(tmpdir, "exemplary_file.txt")
 
-        with open(file_path, 'w') as f:
-            f.write("content")
+        with open(file_path, 'w') as file:
+            file.write("content")
 
         expected_xxhash = '6c5b191a31c5a9fc'
         assert fast_hash(file_path) == expected_xxhash
@@ -20,7 +20,7 @@ def test_fast_hash_large_file():
     with tempfile.TemporaryDirectory() as tmpdir:
         large_file_path = os.path.join(tmpdir, "large_file.txt")
         with open(large_file_path, 'w') as file:
-            for _ in range(10000):  # writing 10000 lines
+            for _ in range(10000):
                 file.write("Exemplary line.\n")
 
         first_hash_ground_truth = '242b2a4200cb42ff'
