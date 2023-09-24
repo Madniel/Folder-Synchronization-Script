@@ -4,7 +4,8 @@ setup(
     name='sync_folders',
     version='0.1',
     packages=find_packages(),
-    install_requires=['pytest',
-                      'setuptools',
-                      'xxhash'],
+    install_requires=[
+        'pytest',
+        'setuptools',
+        'xxhash'],
 )
