@@ -34,15 +34,23 @@ script swiftly acts to copy, update, or delete files as required, ensuring data 
 
 The script comes with both unit and integral tests to ensure its reliability and accuracy.
 
-### Unit Tests
+# Unit Tests
 
-Unit tests are focused on individual components of the script, ensuring that functions like `fast_hash` and `log`
-operate correctly. Examples include:
+The module contains several unit tests to ensure the correctness of individual components. Below are the unit tests for the functions:
 
-- Verifying the hash of a basic file.
-- Confirming the hash of a large file.
-- Detecting content changes by hashing.
-- Logging single and multiple entries correctly.
+## Tests Overview:
+
+- **test_fast_hash_basic:** This test ensures that the `fast_hash` function generates the correct hash for a basic file.
+- **test_fast_hash_large_file:** This test confirms that the `fast_hash` function correctly hashes a large file.
+- **test_fast_hash_content_change:** Validates that the hash value changes when the content of a file changes.
+- **test_log_single_entry & test_log_multiple_entries:** These tests ensure that the logging mechanism correctly captures single and multiple log entries.
+- **test_remove_entry:** Checks that an individual file can be removed correctly.
+- **test_remove_extra_entries:** Verifies that extra files not present in the source but present in the replica can be removed.
+- **test_is_files_are_identical:** Checks if two files with identical content are recognized as such.
+- **test_copy_from_source_to_replica:** Validates that files from the source are correctly copied to the replica.
+- **test_is_source_exists:** Ensures that the function correctly identifies if a source exists or not.
+- **test_check_replica_exists:** Confirms that the function can determine if a replica exists and re-creates it if not.
+- **test_get_directory_entries:** Checks if the function can correctly list the entries within a directory.
 
 To run the unit tests:
 
@@ -50,17 +58,38 @@ To run the unit tests:
 python -m unittest path_to_unit_tests_file.py
 ```
 
-### Integral Tests
+## Integral Test
 
-Integral tests ensure that the various components of the program work harmoniously together. For the Folder Synchronization Program, an integral test might involve:
+The `test_full_sync_process` function provides an integral test that checks the full synchronization process to ensure
+that both the source and replica directories are accurately mirrored.
 
-1. Creating temporary directories with sample files to simulate the `source` and `replica`.
-2. Running the `sync_folders` function to synchronize these folders.
-3. Checking if:
-   - Newly created files in the source are copied to the replica.
-   - Updated files in the source replace outdated ones in the replica.
-   - Deleted files in the source are removed from the replica.
-   - Nested directories and their files are accurately mirrored in the replica.
-4. Logging of all operations is checked in the specified log file.
+### Test Steps:
+
+1. **Initial Sync**:
+    - Syncs using predefined source files ("file1.txt" and "file2.txt").
+    - Verifies that both directories have the same set of files.
+
+2. **File Addition and Removal**:
+    - Adds a new file, "file3.txt", to the source and deletes "file1.txt".
+    - Syncs and verifies the changes in the replica.
+
+3. **Content Update**:
+    - Modifies the content of "file2.txt" in the source.
+    - Syncs and checks the updated content in the replica.
+
+4. **Subdirectory Handling**:
+    - Creates a subdirectory in the source with "subfile.txt".
+    - Syncs and ensures the replica also has this subdirectory and file.
+
+5. **Removing Subdirectories**:
+    - Removes the entire subdirectory created in the previous step from the source.
+    - Syncs and ensures its removal in the replica.
+
+6. **Deep Nested Directories**:
+    - Creates nested directories within the source with "deep_file.txt" in the innermost level.
+    - Syncs and ensures the replica replicates the same nested structure and file.
+
+7. **Log Verification**:
+    - Checks the log for synchronization actions such as copying, removal, and updating of files.
 
 
