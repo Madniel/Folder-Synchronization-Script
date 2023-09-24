@@ -6,7 +6,6 @@ from typing import Dict
 import xxhash
 
 from utils.decorator import exception_handler
-SYSTEM_RESERVED_NAMES = {"CON", "PRN", "AUX", "NUL", "COM1", "LPT1"}  # This is for Windows. Adjust accordingly.
 
 
 @exception_handler
@@ -35,9 +34,6 @@ def remove_entry(entry: os.DirEntry, file_path: str, log_file: str) -> None:
     - entry (os.DirEntry): The os.DirEntry object representing the file or directory to be removed.
     - file_path (str): The path to the file or directory that needs to be removed.
     - log_file (str): Path to the log file where the removal action will be logged.
-
-    Note:
-    It is essential that the provided os.DirEntry object corresponds to the given file_path.
     """
     if entry.is_dir():
         shutil.rmtree(file_path)
@@ -57,9 +53,6 @@ def remove_extra_entries(source_files: Dict, replica_files: Dict, replica: str, 
                             as values representing the files and directories in the replica.
     - replica (str): Path to the replica directory.
     - log_file (str): Path to the log file where actions will be logged.
-
-    Note:
-    The function makes use of the 'remove_entry' function to perform the removal operation.
     """
     additional_files = set(replica_files.keys()) - set(source_files.keys())
     for additional_file in additional_files:
@@ -168,10 +161,6 @@ def sync_folders(source: str, replica: str, log_file: str) -> None:
     - source: Path to the source directory.
     - replica: Path to the replica directory.
     - log_file: Path to the log file.
-
-    This function ensures that after its execution, the contents of the
-    replica folder match exactly with the source folder. Any extra files
-    or directories in the replica that don't exist in source are removed.
     """
 
     if not is_source_exists(source, log_file):
