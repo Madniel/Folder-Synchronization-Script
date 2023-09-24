@@ -1,33 +1,59 @@
 import os
+import tempfile
+import time
 
-from sync_package.sync_task import log, sync_folders, md5
-
-
-def test_md5(setup_temp_dirs_with_files, setup_temp_log_file):
-    source, _ = setup_temp_dirs_with_files
-    file_path = os.path.join(source, "file1.txt")
-
-    # MD5 hash for "content1" is '1ce10b4343b9f5b048a3e7d2fc210fa1'
-    assert md5(file_path, setup_temp_log_file) == '1ce10b4343b9f5b048a3e7d2fc210fa1'
+from sync_folders.sync_folders import log, fast_hash
 
 
-def test_log(setup_temp_log_file):
-    log_file_path = setup_temp_log_file
-    log("Test message", log_file_path)
+def test_fast_hash_basic(temporary_directories_with_files, exemplary_log_file):
+    source, _ = temporary_directories_with_files
+    file_path = os.path.join(source, "exemplary_file.txt")
+    expected_xxhash = '176d683a04c66e88'
 
-    with open(log_file_path, "r") as f:
-        lines = f.readlines()
+    assert fast_hash(file_path) == expected_xxhash
+
+
+def test_fast_hash_large_file():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        large_file_path = os.path.join(tmpdir, "large_file.txt")
+        with open(large_file_path, 'w') as file:
+            for _ in range(10000):  # writing 10000 lines
+                file.write("Exemplary line.\n")
+
+        first_hash_ground_truth = '242b2a4200cb42ff'
+        first_hash = fast_hash(large_file_path)
+        assert first_hash == first_hash_ground_truth
+
+
+def test_fast_hash_content_change():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        file_path = os.path.join(tmpdir, "test_file.txt")
+        with open(file_path, 'w') as file:
+            file.write("Original content.")
+
+        original_hash = fast_hash(file_path)
+
+        with open(file_path, 'w') as file:
+            file.write("Modified content.")
+
+        modified_hash = fast_hash(file_path)
+        assert original_hash != modified_hash
+
+
+def test_log_single_entry(exemplary_log_file):
+    log("Test message", exemplary_log_file)
+
+    with open(exemplary_log_file, "r") as file:
+        lines = file.readlines()
         assert "Test message" in lines[-1]
 
 
-def test_sync_folders(setup_temp_dirs_with_files, setup_temp_log_file):
-    source, replica = setup_temp_dirs_with_files
-    sync_folders(str(source), str(replica), setup_temp_log_file)
+def test_log_multiple_entries(exemplary_log_file):
+    log("First message", exemplary_log_file)
+    time.sleep(1)
+    log("Second message", exemplary_log_file)
 
-    # Check if the replica has the files from source
-    assert set(os.listdir(replica)) == {"file1.txt", "file2.txt"}
-
-    with open(os.path.join(replica, "file1.txt"), "r") as f:
-        assert f.read() == "content1"
-    with open(os.path.join(replica, "file2.txt"), "r") as f:
-        assert f.read() == "content2"
+    with open(exemplary_log_file, "r") as file:
+        lines = file.readlines()
+        assert "First message" in lines[-2]
+        assert "Second message" in lines[-1]
