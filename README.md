@@ -16,10 +16,11 @@ Ensure your replica directory perfectly mirrors the source directory with this r
 Navigate to the script's directory and execute:
 
 ```bash
-python sync_folders.py [source_directory] [replica_directory] [log_file_path]
+python run_sync_folders.py [source_directory] [replica_directory] [synchronization_interval_in_seconds] [log_file_path]
 ```
 
 > Replace `[source_directory]`, `[replica_directory]`, and `[log_file_path]` with your paths.
+> Replace '[synchronization_interval_in_seconds]' with time.
 
 ### 2. Dive into Logs
 
