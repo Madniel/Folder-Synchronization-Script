@@ -11,10 +11,10 @@ if __name__ == "__main__":
     Users can specify the source and replica directories, synchronization interval, and the path to a log file.
 
     Usage:
-        run_script.py <source_folder_path> <replica_folder_path> <synchronization_interval_in_seconds> <log_file_path>
+        run_sync_folders.py <source_folder_path> <replica_folder_path> <synchronization_interval_in_seconds> <log_file_path>
 
     Example:
-        run_script.py /path/to/source/folder /path/to/replica/folder 10 /path/to/logfile.log
+        run_sync_folders.py /path/to/source/folder /path/to/replica/folder 10 /path/to/logfile.log
 
     This example will sync the source folder to the replica folder every 10 seconds and log the synchronization 
     activities to the specified log file.
