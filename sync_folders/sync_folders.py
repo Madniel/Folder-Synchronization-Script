@@ -153,6 +153,7 @@ def get_directory_entries(directory: str) -> Dict:
     return {entry.name: entry for entry in os.scandir(directory)}
 
 
+@exception_handler()
 def sync_folders(source: str, replica: str, log_file: str) -> None:
     """
     Synchronize the contents of the source folder to the replica folder.
@@ -181,7 +182,6 @@ def sync_folders(source: str, replica: str, log_file: str) -> None:
                                 log_file=log_file)
 
 
-@exception_handler()
 def log(message: str, log_file: str) -> None:
     """
     Log messages to the console and to a log file.
