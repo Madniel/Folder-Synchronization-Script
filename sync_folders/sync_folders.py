@@ -181,7 +181,7 @@ def sync_folders(source: str, replica: str, log_file: str) -> None:
                                 log_file=log_file)
 
 
-@exception_handler
+@exception_handler()
 def log(message: str, log_file: str) -> None:
     """
     Log messages to the console and to a log file.
